@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Clippy AI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="draggable"></div>
+    <!-- The main container for our app -->
+    <div id="app-container">
+        <!-- Where chat messages will appear -->
+        <div id="chat-container"></div>
+        <!-- The text input box -->
+        <input type="text" id="user-input" placeholder="Ask me anything...">
+    </div>
+    <!-- We link our frontend Javascript file -->
+    <script src="./renderer.js"></script>
+</body>
+</html>
+```*   Save the file.
+
+**B. Create the Frontend Logic (`renderer.js`)**
+
+*   Open the empty `renderer.js` file.
+*   Copy and paste this code. This script waits for you to press "Enter" in the input box, sends your message to the backend, and displays the response.
+
+```javascript
+// renderer.js
+const chatContainer = document.getElementById('chat-container');
+const userInput = document.getElementById('user-input');
+
+// This function adds a message to the chat window.
+function addMessage(sender, message) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', sender); // Add classes for styling
+    messageElement.innerHTML = message; // Use innerHTML to render formatted text
+    chatContainer.appendChild(messageElement);
+    // Scroll to the bottom to see the new message
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// Listen for the 'Enter' key press in the input box
+userInput.addEventListener('keypress', async (e) => {
+    if (e.key === 'Enter' && userInput.value.trim() !== '') {
+        const prompt = userInput.value;
+        addMessage('user', `<strong>You:</strong> ${prompt}`);
+        userInput.value = ''; // Clear the input box
+
+        // Send the prompt to the main process via the preload bridge
+        const response = await window.electronAPI.askOpenAI(prompt);
+        
+        // Add the AI's response to the chat
+        addMessage('assistant', `<strong>Clippy:</strong> ${response}`);
+    }
+});

@@ -1,0 +1,40 @@
+/* Add this to the bottom of styles.css */
+
+#app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Make the container fill the whole window */
+}
+
+#chat-container {
+    flex-grow: 1; /* Allows this container to grow and fill available space */
+    padding: 10px;
+    overflow-y: auto; /* Adds a scrollbar if content overflows */
+}
+
+#user-input {
+    border: none;
+    padding: 10px;
+    background-color: #444;
+    color: white;
+    outline: none; /* Removes the glowing border on focus */
+}
+
+.message {
+    margin-bottom: 10px;
+    line-height: 1.4;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.message.user {
+    background-color: #007bff;
+    color: white;
+    text-align: right;
+}
+
+.message.assistant {
+    background-color: #555;
+    color: white;
+    text-align: left;
+}
